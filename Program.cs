@@ -17,3 +17,41 @@
 [“Hello”, “2”, “world”, “:-)”] → [“2”, “:-)”]
 [“1234”, “1567”, “-2”, “computer science”] → [“-2”]
 [“Russia”, “Denmark”, “Kazan”] → [] */
+
+void InputArray(int[] array)
+{
+    for(int i = 0; i < array.GetLength(0); i++)
+    {
+        array[i] = new Random().Next(97, 123); //маленькие латинские буквы в ASCII
+        
+    } 
+     
+}
+void TransformArray(int[] array, char [] charArray)
+{
+ for(int i = 0; i < array.GetLength(0); i++)
+    {
+        charArray [i] = Convert.ToChar(array [i]); //преобразуем массив int в char
+    }
+}
+
+string ArrayToString (char [] charArray, string result)
+{
+   for(int i = 0; i < charArray.GetLength(0); i++)
+    {
+       result = result + Convert.ToString(charArray[i]);
+    } 
+    return result; 
+}
+Console.Clear();
+
+int size = new Random().Next(50, 100);
+int[] array = new int[size];
+char[] charArray = new char[size];
+string resultString = String.Empty;
+InputArray(array);
+
+TransformArray(array,charArray);
+
+resultString = ArrayToString(charArray, resultString);
+Console.WriteLine($"Получилась строка: {resultString}");
