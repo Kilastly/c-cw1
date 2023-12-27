@@ -20,10 +20,18 @@
 
 void InputArray(int[] array)
 {
+    int count = 0;
     for(int i = 0; i < array.GetLength(0); i++)
     {
+        count = new Random().Next(1,7);//определяем случайную позицию в массиве
+        if (count ==3)
+        {
+            array[i] = 32; //добваляем пробел
+        }
+        else
+        {
         array[i] = new Random().Next(97, 123); //маленькие латинские буквы в ASCII
-        
+        }
     } 
      
 }
