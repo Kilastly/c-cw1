@@ -24,7 +24,7 @@ void InputArray(int[] array)
     for(int i = 0; i < array.GetLength(0); i++)
     {
         count = new Random().Next(1,7);//определяем случайную позицию в массиве
-        if (count ==3)
+        if (count ==3 && i !=0 && array[i-1] != 32)
         {
             array[i] = 32; //добваляем пробел
         }
@@ -43,11 +43,18 @@ void TransformArray(int[] array, char [] charArray)
     }
 }
 
-string ArrayToString (char [] charArray, string result)
+string[] CharArrayToStringArray (char [] charArray, string[] result)
 {
-   for(int i = 0; i < charArray.GetLength(0); i++)
+   for(int i = 0; i < charArray.GetLength(0);)
     {
-       result = result + Convert.ToString(charArray[i]);
+       if (charArray[i] == ' ')
+       {
+        i++;
+       }
+       else
+       {
+       result[i] = result[i] + Convert.ToString(charArray[i]);
+       }
     } 
     return result; 
 }
@@ -56,10 +63,10 @@ Console.Clear();
 int size = new Random().Next(50, 100);
 int[] array = new int[size];
 char[] charArray = new char[size];
-string resultString = String.Empty;
+// string[] resultString = new string[];
 InputArray(array);
-
+Console.WriteLine($"Начальный массив: [{string.Join(", ", array)}]");
 TransformArray(array,charArray);
-
-resultString = ArrayToString(charArray, resultString);
-Console.WriteLine($"Получилась строка: {resultString}");
+Console.WriteLine($"Начальный массив: [{string.Join(", ", charArray)}]");
+// resultString[] = CharArrayToString(charArray, resultString[]);
+// Console.WriteLine($"Получилась строка: {resultString}");
