@@ -18,6 +18,10 @@
 [“1234”, “1567”, “-2”, “computer science”] → [“-2”]
 [“Russia”, “Denmark”, “Kazan”] → [] */
 
+using System.Data;
+using System.Globalization;
+using System.Xml.XPath;
+
 void InputArray(int[] array)
 {
     int count = 0;
@@ -43,30 +47,62 @@ void TransformArray(int[] array, char [] charArray)
     }
 }
 
-string[] CharArrayToStringArray (char [] charArray, string[] result)
+int SizeStringArray(int[]array)
 {
-   for(int i = 0; i < charArray.GetLength(0);)
-    {
-       if (charArray[i] == ' ')
-       {
-        i++;
-       }
-       else
-       {
-       result[i] = result[i] + Convert.ToString(charArray[i]);
-       }
-    } 
-    return result; 
+    int count =0;
+     for(int i = 0; i < array.GetLength(0) -1 ; i++)
+     {
+        if (array[i] == 32)
+        {
+            count ++;
+        }
+     }
+     return count;
 }
+
+int [] SpacePositions(int[]array, int sizeStringArr)
+{
+    int[] spacePosition = new int [sizeStringArr]; 
+    int j = 0;
+    for(int i = 0; i < array.GetLength(0); i++)
+    {
+        if (array[i] == 32 && i <array.GetLength(0)-1)
+        {
+            spacePosition[j] = i;
+            j++;
+        }
+    }
+    return spacePosition;
+
+}
+
+// string[] CharArrayToStringArray (char [] charArray, int sizeStringArr)
+// {
+ 
+// }
+
+void PrintArray(string[] result)
+{
+    for(int i = 0; i < result.GetLength(0); i++)
+    {
+        Console.Write($"{result[i]} \t");
+    }
+}
+
 Console.Clear();
 
-int size = new Random().Next(50, 100);
+int size = new Random().Next(10, 20);
 int[] array = new int[size];
 char[] charArray = new char[size];
-// string[] resultString = new string[];
 InputArray(array);
 Console.WriteLine($"Начальный массив: [{string.Join(", ", array)}]");
+
 TransformArray(array,charArray);
-Console.WriteLine($"Начальный массив: [{string.Join(", ", charArray)}]");
-// resultString[] = CharArrayToString(charArray, resultString[]);
-// Console.WriteLine($"Получилась строка: {resultString}");
+Console.WriteLine($"Начальный массив символов: [{string.Join(", ", charArray)}]");
+int sizeStringArr = SizeStringArray(array);
+int[] spacePosition = SpacePositions(array,sizeStringArr);
+Console.WriteLine($"массив позиций пробела: [{string.Join(", ", spacePosition)}]");
+
+Console.WriteLine($"Размер массива {sizeStringArr}");
+// string [] resultStringArray = CharArrayToStringArray(charArray, sizeStringArr);
+// PrintArray(resultStringArray);
