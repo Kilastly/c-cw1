@@ -28,7 +28,7 @@ void InputArray(int[] array)
     for(int i = 0; i < array.GetLength(0); i++)
     {
         count = new Random().Next(1,7);//определяем случайную позицию в массиве
-        if (count ==3 && i !=0 && array[i-1] != 32)
+        if (count ==3 && i !=0 && i != array.GetLength(0) - 1)//запрещаем проблам быть первыми и последними
         {
             array[i] = 32; //добваляем пробел
         }
@@ -60,7 +60,7 @@ int SizeStringArray(int[]array)
      return count;
 }
 
-int [] SpacePositions(int[]array, int sizeStringArr)
+int [] SpacePositions(int[]array, int sizeStringArr)//определяем позиции пробелов 
 {
     int[] spacePosition = new int [sizeStringArr]; 
     int j = 0;
@@ -72,16 +72,35 @@ int [] SpacePositions(int[]array, int sizeStringArr)
             j++;
         }
     }
+    spacePosition[sizeStringArr-1] = array.GetLength(0); // последний элемент в массиве
     return spacePosition;
 
 }
 
-// string[] CharArrayToStringArray (char [] charArray, int sizeStringArr)
-// {
- 
-// }
 
-void PrintArray(string[] result)
+ string[] CharArrayToStringArray (char [] charArray, int sizeStringArr, int [] spacePosition)//создаем массив строк
+    {
+        string[] stringArray = new string[sizeStringArr];
+        int j = 0;
+        int k = 0;
+        for (int i = 0; i < charArray.GetLength(0);) 
+            {
+                        if (i<spacePosition[k])
+                            {
+                                stringArray[j] = stringArray[j] +  Convert.ToString(charArray[i]);
+                                i++;
+                            }
+                            else
+                                {
+                                    if (j <= sizeStringArr)
+                                    j++;
+                                    k++;
+                                }
+            }
+        return stringArray;        
+    }
+
+void PrintArray(string[] result)//печатаем массив
 {
     for(int i = 0; i < result.GetLength(0); i++)
     {
@@ -100,9 +119,17 @@ Console.WriteLine($"Начальный массив: [{string.Join(", ", array)}
 TransformArray(array,charArray);
 Console.WriteLine($"Начальный массив символов: [{string.Join(", ", charArray)}]");
 int sizeStringArr = SizeStringArray(array);
-int[] spacePosition = SpacePositions(array,sizeStringArr);
-Console.WriteLine($"массив позиций пробела: [{string.Join(", ", spacePosition)}]");
+if (sizeStringArr ==0)
+{
+    Console.WriteLine("В заданном массиве нет пробелов!");
+}
+else
+{
+    sizeStringArr = sizeStringArr +1;
+    int[] spacePosition = SpacePositions(array,sizeStringArr);
+    Console.WriteLine($"массив позиций пробела: [{string.Join(", ", spacePosition)}]");
 
-Console.WriteLine($"Размер массива {sizeStringArr}");
-// string [] resultStringArray = CharArrayToStringArray(charArray, sizeStringArr);
-// PrintArray(resultStringArray);
+    Console.WriteLine($"Размер массива {sizeStringArr}");
+    string [] resultStringArray = CharArrayToStringArray(charArray, sizeStringArr, spacePosition);
+    PrintArray(resultStringArray);
+}
