@@ -21,64 +21,62 @@
 using System.Data;
 using System.Globalization;
 using System.Xml.XPath;
-
-void InputArray(int[] array)
-{
-    int count = 0;
-    for(int i = 0; i < array.GetLength(0); i++)
+// Полностью автоматическое решение:
+void InputArray(int[] array)//создаем массив из случайных чисел, соответсвующих маленьким буквам в ASCII
     {
-        count = new Random().Next(1,7);//определяем случайную позицию в массиве
-        if (count ==3 && i !=0 && i != array.GetLength(0) - 1 && array[i-1] !=32)//запрещаем проблам быть первыми и последними
+        int count = 0;
+        for(int i = 0; i < array.GetLength(0); i++)
         {
-            array[i] = 32; //добваляем пробел
-        }
-        else
-        {
-        array[i] = new Random().Next(97, 123); //маленькие латинские буквы в ASCII
-        }
-    } 
-     
-}
-void TransformArray(int[] array, char [] charArray)
-{
- for(int i = 0; i < array.GetLength(0); i++)
-    {
-        charArray [i] = Convert.ToChar(array [i]); //преобразуем массив int в char
+            count = new Random().Next(1,7);//определяем случайную позицию в массиве
+            if (count ==3 && i !=0 && i != array.GetLength(0) - 1 && array[i-1] !=32)//запрещаем проблам быть первыми и последними
+            {
+                array[i] = 32; //добваляем пробел
+            }
+            else
+            {
+            array[i] = new Random().Next(97, 123); //маленькие латинские буквы в ASCII
+            }
+        } 
+        
     }
-}
 
-int SizeStringArray(int[]array)
-{
-    int count =0;
-     for(int i = 0; i < array.GetLength(0) -1 ; i++)
-     {
-        if (array[i] == 32)
+void TransformArray(int[] array, char [] charArray) //преобразуем массив int в char
+    {
+    for(int i = 0; i < array.GetLength(0); i++)
         {
-            count ++;
+            charArray [i] = Convert.ToChar(array [i]); 
         }
-     }
-     return count;
-}
+    }
+
+int SizeStringArray(int[]array) // опеределяем размер массива строк
+    {
+        int count =0;
+        for(int i = 0; i < array.GetLength(0) -1 ; i++)
+        {
+            if (array[i] == 32)
+            {
+                count ++;
+            }
+        }
+        return count;
+    }
 
 int [] SpacePositions(int[]array, int sizeStringArr)//определяем позиции пробелов 
-{
-    int[] spacePosition = new int [sizeStringArr];
-      int j = 0;
-    for(int i = 0; i < array.GetLength(0); i++)
     {
-        if (array[i] == 32 && i <array.GetLength(0)-1)
+        int[] spacePosition = new int [sizeStringArr];
+        int j = 0;
+        for(int i = 0; i < array.GetLength(0); i++)
         {
-            spacePosition[j] = i;
-            j++;
+            if (array[i] == 32 && i <array.GetLength(0)-1)
+            {
+                spacePosition[j] = i;
+                j++;
+            }
         }
+        spacePosition[sizeStringArr-1] = array.GetLength(0); // последний элемент в массиве
+        return spacePosition;
     }
-    spacePosition[sizeStringArr-1] = array.GetLength(0); // последний элемент в массиве
-    return spacePosition;
-
-}
-
-
- string[] CharArrayToStringArray (char [] charArray, int sizeStringArr, int [] spacePosition)//создаем массив строк
+string[] CharArrayToStringArray (char [] charArray, int sizeStringArr, int [] spacePosition)//создаем массив строк
     {
         string[] stringArray = new string[sizeStringArr];
         int j = 0;
@@ -111,49 +109,43 @@ int size = new Random().Next(10, 20);
 int[] array = new int[size];
 char[] charArray = new char[size];
 InputArray(array);
-// Console.WriteLine($"Начальный массив: [{string.Join(", ", array)}]");
-
 TransformArray(array,charArray);
-
 int sizeStringArr = SizeStringArray(array);
 if (sizeStringArr ==0)
-{
-    Console.WriteLine($"Начальный массив: [{string.Join("", charArray)}]");
-    Console.WriteLine("В заданном массиве нет пробелов!");
-}
+    {
+        Console.WriteLine($"Начальный массив: [{string.Join("", charArray)}]");
+        Console.WriteLine("В заданном массиве нет пробелов!");
+    }
 else
-{
-    sizeStringArr = sizeStringArr +1;
-    int[] spacePosition = SpacePositions(array,sizeStringArr);
-    // Console.WriteLine($"массив позиций пробела: [{string.Join(", ", spacePosition)}]");
-
-    // Console.WriteLine($"Размер массива {sizeStringArr}");
-    string [] resultStringArray = CharArrayToStringArray(charArray, sizeStringArr, spacePosition);
-    Console.WriteLine($"Массив строк: [{string.Join(", ", resultStringArray)}]");
-            int sizeLess3 = 0;
+    {
+        sizeStringArr = sizeStringArr +1;
+        int[] spacePosition = SpacePositions(array,sizeStringArr);
+        string [] resultStringArray = CharArrayToStringArray(charArray, sizeStringArr, spacePosition);
+        Console.WriteLine($"Массив строк: [{string.Join(", ", resultStringArray)}]");
+                int sizeLess3 = 0;
+                for (int i = 0; i < resultStringArray.Length; i++)
+                {
+                    if (resultStringArray[i].Length <= 3)
+                    {
+                        sizeLess3++; 
+                    }
+                }
+        if (sizeLess3 !=0)     
+            {
+            string[] less3 = new string [sizeLess3];
+            int j = 0;
             for (int i = 0; i < resultStringArray.Length; i++)
-            {
-                if (resultStringArray[i].Length <= 3)
                 {
-                    sizeLess3++; 
+                    if (resultStringArray[i].Length <= 3)
+                    {
+                        less3[j] = resultStringArray[i];
+                        j++;
+                    }
                 }
+                Console.WriteLine($"Массив строк меньше 3 символов: [{string.Join(", ", less3)}]");   
             }
-      if (sizeLess3 !=0)     
-        {
-        string[] less3 = new string [sizeLess3];
-        int j = 0;
-        for (int i = 0; i < resultStringArray.Length; i++)
+        else
             {
-                if (resultStringArray[i].Length <= 3)
-                {
-                    less3[j] = resultStringArray[i];
-                    j++;
-                }
-            }
-            Console.WriteLine($"Массив строк меньше 3 символов: [{string.Join(", ", less3)}]");   
-        }
-      else
-        {
-            Console.WriteLine("В заданном массиве нет строк меньше 3 символов!");
-        }     
-}
+                Console.WriteLine("В заданном массиве нет строк меньше 3 символов!");
+            }     
+    }
