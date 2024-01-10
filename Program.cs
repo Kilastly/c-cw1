@@ -105,14 +105,6 @@ int [] SpacePositions(int[]array, int sizeStringArr)//определяем по�
         return stringArray;        
     }
 
-void PrintArray(string[] result)//печатаем массив
-{
-    for(int i = 0; i < result.GetLength(0); i++)
-    {
-        Console.Write($"{result[i]} \t");
-    }
-}
-
 Console.Clear();
 
 int size = new Random().Next(10, 20);
